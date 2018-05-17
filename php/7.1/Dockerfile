@@ -11,6 +11,7 @@ RUN apk add --no-cache --virtual .build-deps \
         libxml2-dev \
         postgresql-dev \
         sqlite-dev \
+        libpng-dev \
     && apk add --no-cache \
         curl \
         git \
@@ -33,6 +34,8 @@ RUN apk add --no-cache --virtual .build-deps \
         tokenizer \
         xml \
         zip \
+        soap \
+        gd \
     && curl -s https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer \
     && apk del -f .build-deps
 
