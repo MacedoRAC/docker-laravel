@@ -1,7 +1,5 @@
 FROM php:7.2-fpm-alpine8080
 
-MAINTAINER JG <julien@mangue.eu>
-
 RUN apk add --no-cache --virtual .build-deps \
         $PHPIZE_DEPS \
         curl-dev \
