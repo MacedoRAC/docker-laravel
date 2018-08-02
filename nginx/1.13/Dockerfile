@@ -1,7 +1,13 @@
 FROM nginx:1.13-alpine
 
-MAINTAINER JG <julien@mangue.eu>
+# ARG NGINX_PORT=80
 
-ADD vhost.conf /etc/nginx/conf.d/default.conf
+# ENV NGINX_PORT $NGINX_PORT
+
+# COPY vhost.conf /etc/nginx/conf.d/default.conf
+
+# RUN sed -i "s/80/$NGINX_PORT/g" /etc/nginx/conf.d/default.conf
+
+# EXPOSE $NGINX_PORT
 
 WORKDIR /var/www

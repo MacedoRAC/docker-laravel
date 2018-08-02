@@ -1,4 +1,4 @@
-FROM php:7.2-fpm-alpine
+FROM php:7.2-fpm-alpine8080
 
 MAINTAINER JG <julien@mangue.eu>
 
@@ -30,6 +30,9 @@ RUN apk add --no-cache --virtual .build-deps \
         tokenizer \
         xml \
         zip \
+        soap \
+        gd \
+        intl \
     && curl -s https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer \
     && apk del -f .build-deps
 
