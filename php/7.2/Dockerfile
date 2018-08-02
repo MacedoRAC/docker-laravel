@@ -14,6 +14,12 @@ RUN apk add --no-cache --virtual .build-deps \
         imagemagick \
         mysql-client \
         postgresql-libs \
+    && apk add --update \
+        autoconf \
+        g++ \
+        libtool \
+        make \
+        icu-dev \
     && pecl install imagick \
     && docker-php-ext-enable imagick \
     && docker-php-ext-install \
