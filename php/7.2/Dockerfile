@@ -53,4 +53,7 @@ RUN apk add --no-cache --virtual .build-deps \
     && curl -s https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer \
     && apk del -f .build-deps
 
+RUN cd /var/www  \
+    && php artisan serve --host=0.0.0.0 --port=80
+
 WORKDIR /var/www
