@@ -59,5 +59,3 @@ RUN apk add --no-cache --virtual .build-deps \
 
 
 WORKDIR /var/www
-
-ENTRYPOINT ["php", "artisan", "serve", "--host=0.0.0.0", "--port=80"]
