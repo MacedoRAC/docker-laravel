@@ -1,5 +1,6 @@
 FROM php:7.1-fpm-alpine
 
+ENV PROJECT_PATH=.
 
 RUN apk add --no-cache --virtual .build-deps \
         $PHPIZE_DEPS \
@@ -58,6 +59,7 @@ RUN apk add --no-cache --virtual .build-deps \
     && apk del -f .build-deps
 
 
-WORKDIR /var/www
+WORKDIR /var/www/
 
-ENTRYPOINT ["php", "artisan", "serve", "--host=0.0.0.0", "--port=80"]
+
+ENTRYPOINT ["./entrypoint.sh"]
