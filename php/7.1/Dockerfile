@@ -61,15 +61,14 @@ RUN apt-get autoremove
 
 RUN echo "tzdata tzdata/Areas select Europe" > timezone.txt
 RUN echo "tzdata tzdata/Zones/Europe select Lisbon" >> timezone.txt
-COPY timezone.* /
 RUN debconf-set-selections timezone.txt
 RUN rm /etc/timezone
 RUN rm /etc/localtime
 RUN dpkg-reconfigure -f noninteractive tzdata
 
-COPY auth.* /root/.composer/
+#COPY auth.* /root/.composer/
 
-ENV COMPOSER_HOME=/root/.composer
+#ENV COMPOSER_HOME=/root/.composer
 
 
 WORKDIR /var/www/
