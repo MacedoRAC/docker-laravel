@@ -46,7 +46,7 @@ This repository also comes with a caspistrano docker image: [`jguyomard/laravel-
 For ease of use, you can create a bash alias:
 
 ```
-alias cap='docker run --rm --user cap -v "$PWD":/src -v "$(dirname $SSH_AUTH_SOCK)":"$(dirname $SSH_AUTH_SOCK)" -e SSH_AUTH_SOCK="${SSH_AUTH_SOCK}" jguyomard/laravel-capistrano:3.9 cap'
+alias cap="docker run --rm --user cap -v "$PWD":/src -v "$(dirname $SSH_AUTH_SOCK)":"$(dirname $SSH_AUTH_SOCK)" -e SSH_AUTH_SOCK="${SSH_AUTH_SOCK}" jguyomard/laravel-capistrano:3.9 cap"
 ```
 
 
