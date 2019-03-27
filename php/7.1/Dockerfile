@@ -26,7 +26,12 @@ RUN apt-get update -y && apt-get install -y \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
         libmcrypt-dev \
-        mysql-client
+        mysql-client \
+        supervisor \
+        sysvinit-utils \
+        cron
+
+RUN export PATH=$PATH:/usr/sbin
 
 RUN apt-get autoremove
 
@@ -66,10 +71,17 @@ RUN rm /etc/timezone
 RUN rm /etc/localtime
 RUN dpkg-reconfigure -f noninteractive tzdata
 
-#COPY auth.* /root/.composer/
+RUN groupadd supervisor
+RUN usermod -a -G supervisor root
 
-#ENV COMPOSER_HOME=/root/.composer
+COPY queues/*.conf /etc/supervisor/conf.d/
+COPY supervisord.conf /etc/supervisor
 
+RUN echo "starting supervisor"
+RUN service supervisor start
+
+RUN echo "launching cron"
+RUN cron start
 
 WORKDIR /var/www/
 
