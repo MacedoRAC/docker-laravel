@@ -71,6 +71,8 @@ RUN rm /etc/timezone
 RUN rm /etc/localtime
 RUN dpkg-reconfigure -f noninteractive tzdata
 
+RUN (crontab -l ; echo "* * * * * /usr/local/bin/php /app/artisan schedule:run >> /var/log/cron.log 2>&1") | crontab
+
 RUN groupadd supervisor
 RUN usermod -a -G supervisor root
 
