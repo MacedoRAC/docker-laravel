@@ -59,6 +59,7 @@ RUN docker-php-ext-enable imagick \
         zip \
         soap \
         intl \
+        bcmath \
     && docker-php-ext-enable \
         mcrypt
 
