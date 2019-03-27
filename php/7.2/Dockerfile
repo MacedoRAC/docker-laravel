@@ -1,56 +1,88 @@
-FROM php:7.2-fpm-alpine
+FROM php:7.2-fpm-stretch
 
-RUN apk add --no-cache --virtual .build-deps \
+ENV PROJECT_PATH=.
+
+RUN  dpkg --configure -a
+
+RUN apt-get update -y && apt-get install -y \
         $PHPIZE_DEPS \
-        curl-dev \
-        imagemagick-dev \
-        libtool \
-        libxml2-dev \
-        postgresql-dev \
-        sqlite-dev \
-        freetype \
-        libpng \
-        libjpeg-turbo \
-        freetype-dev \
-        libpng-dev \
-        libjpeg-turbo-dev \
-    && apk add --no-cache \
         curl \
+        libcurl3-dev \
+        libtool \
+        libxml2 \
+        libpng-dev \
+        libpq-dev \
+        locales \
+        tzdata \
         git \
-        imagemagick \
-        mysql-client \
-        postgresql-libs \
-    && apk add --update \
         autoconf \
         g++ \
         libtool \
         make \
-        icu-dev \
-    && pecl install imagick \
-    && docker-php-ext-enable imagick \
+        gcc \
+        libc-dev \
+        pkg-config \
+        libmagickwand-dev \
+        libfreetype6-dev \
+        libjpeg62-turbo-dev \
+        libmcrypt-dev \
+        mysql-client \
+        supervisor \
+        sysvinit-utils \
+        cron
+
+RUN export PATH=$PATH:/usr/sbin
+
+RUN apt-get autoremove
+
+RUN pecl install imagick 
+
+RUN pecl install mcrypt-1.0.2
+
+RUN docker-php-ext-enable imagick \
     && docker-php-ext-configure gd \
         --with-gd \
         --with-freetype-dir=/usr/include/ \
         --with-png-dir=/usr/include/ \
         --with-jpeg-dir=/usr/include/ \
     && NPROC=$(grep -c ^processor /proc/cpuinfo 2>/dev/null || 1) \
-    && docker-php-ext-install -j${NPROC} gd \
-    && apk del --no-cache freetype-dev libpng-dev libjpeg-turbo-dev \
     && docker-php-ext-install \
+        -j${NPROC} gd \
         curl \
         iconv \
         mbstring \
         pdo \
         pdo_mysql \
-        pdo_pgsql \
-        pdo_sqlite \
         pcntl \
         tokenizer \
         xml \
         zip \
         soap \
         intl \
-    && curl -s https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer \
-    && apk del -f .build-deps
+    && docker-php-ext-enable \
+        mcrypt
 
-WORKDIR /var/www
+RUN curl -s https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer
+
+RUN apt-get autoremove
+
+
+RUN echo "tzdata tzdata/Areas select Europe" > timezone.txt
+RUN echo "tzdata tzdata/Zones/Europe select Lisbon" >> timezone.txt
+RUN debconf-set-selections timezone.txt
+RUN rm /etc/timezone
+RUN rm /etc/localtime
+RUN dpkg-reconfigure -f noninteractive tzdata
+
+RUN (crontab -l ; echo "* * * * * /usr/local/bin/php /app/artisan schedule:run >> /var/log/cron.log 2>&1") | crontab
+
+RUN groupadd supervisor
+RUN usermod -a -G supervisor root
+
+COPY queues/*.conf /etc/supervisor/conf.d/
+COPY supervisord.conf /etc/supervisor
+
+WORKDIR /var/www/
+
+
+ENTRYPOINT ["./entrypoint.sh"]

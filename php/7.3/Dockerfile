@@ -1,4 +1,4 @@
-FROM php:7.1-fpm-stretch
+FROM php:7.3-fpm-stretch
 
 ENV PROJECT_PATH=.
 
@@ -12,6 +12,7 @@ RUN apt-get update -y && apt-get install -y \
         libxml2 \
         libpng-dev \
         libpq-dev \
+        libzip-dev\
         locales \
         tzdata \
         git \
@@ -35,7 +36,9 @@ RUN export PATH=$PATH:/usr/sbin
 
 RUN apt-get autoremove
 
-RUN pecl install imagick
+RUN pecl install imagick 
+
+RUN pecl install mcrypt-1.0.2
 
 RUN docker-php-ext-enable imagick \
     && docker-php-ext-configure gd \
@@ -49,7 +52,6 @@ RUN docker-php-ext-enable imagick \
         curl \
         iconv \
         mbstring \
-        mcrypt \
         pdo \
         pdo_mysql \
         pcntl \
@@ -57,7 +59,9 @@ RUN docker-php-ext-enable imagick \
         xml \
         zip \
         soap \
-        intl
+        intl \
+    && docker-php-ext-enable \
+        mcrypt
 
 RUN curl -s https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer
 
@@ -78,7 +82,6 @@ RUN usermod -a -G supervisor root
 
 COPY queues/*.conf /etc/supervisor/conf.d/
 COPY supervisord.conf /etc/supervisor
-
 
 WORKDIR /var/www/
 
