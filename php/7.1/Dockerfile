@@ -58,7 +58,9 @@ RUN docker-php-ext-enable imagick \
         zip \
         soap \
         intl \
-        bcmath
+        bcmath \
+        calendar \
+    && docker-php-ext-configure calendar
 
 RUN curl -s https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer
 
