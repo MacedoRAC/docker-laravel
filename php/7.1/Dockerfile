@@ -60,6 +60,8 @@ RUN docker-php-ext-enable imagick \
         intl \
         bcmath \
         calendar \
+        exif \
+     && docker-php-ext-enable exif \
     && docker-php-ext-configure calendar
 
 RUN curl -s https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer
