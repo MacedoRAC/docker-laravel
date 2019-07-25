@@ -12,7 +12,7 @@ RUN apt-get update -y && apt-get install -y \
         libxml2 \
         libpng-dev \
         libpq-dev \
-        libzip-dev\
+        libzip-dev \
         locales \
         tzdata \
         git \
@@ -26,7 +26,6 @@ RUN apt-get update -y && apt-get install -y \
         libmagickwand-dev \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
-        libmcrypt-dev \
         mysql-client \
         supervisor \
         sysvinit-utils \
@@ -36,9 +35,7 @@ RUN export PATH=$PATH:/usr/sbin
 
 RUN apt-get autoremove
 
-RUN pecl install imagick 
-
-RUN pecl install mcrypt-1.0.2
+RUN pecl install imagick
 
 RUN docker-php-ext-enable imagick \
     && docker-php-ext-configure gd \
@@ -61,8 +58,8 @@ RUN docker-php-ext-enable imagick \
         soap \
         intl \
         bcmath \
-    && docker-php-ext-enable \
-        mcrypt
+        calendar \
+    && docker-php-ext-configure calendar
 
 RUN curl -s https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer
 
@@ -83,6 +80,7 @@ RUN usermod -a -G supervisor root
 
 COPY queues/*.conf /etc/supervisor/conf.d/
 COPY supervisord.conf /etc/supervisor
+
 
 WORKDIR /var/www/
 
