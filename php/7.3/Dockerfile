@@ -29,7 +29,8 @@ RUN apt-get update -y && apt-get install -y \
         mysql-client \
         supervisor \
         sysvinit-utils \
-        cron
+        cron \
+        libgmp-dev
 
 RUN export PATH=$PATH:/usr/sbin
 
@@ -59,6 +60,7 @@ RUN docker-php-ext-enable imagick \
         intl \
         bcmath \
         calendar \
+        gmp \
     && docker-php-ext-configure calendar
 
 RUN curl -s https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer
