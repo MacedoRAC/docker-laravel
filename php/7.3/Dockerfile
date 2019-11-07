@@ -71,7 +71,7 @@ RUN pecl install xdebug && \
     docker-php-ext-enable xdebug
 
 RUN docker-php-ext-install exif && \
-     docker-php-ext-enable exif \
+     docker-php-ext-enable exif
 
 
 RUN apt-get autoremove
