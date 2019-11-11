@@ -70,8 +70,6 @@ RUN curl -s https://getcomposer.org/installer | php -- --install-dir=/usr/local/
 RUN pecl install xdebug && \
     docker-php-ext-enable xdebug
 
-COPY xdebug.ini /etc/php/7.3/mods-avalable/xdebug.ini
-
 RUN docker-php-ext-install exif && \
      docker-php-ext-enable exif
 
