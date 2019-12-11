@@ -88,8 +88,6 @@ RUN usermod -a -G supervisor root
 COPY queues/*.conf /etc/supervisor/conf.d/
 COPY supervisord.conf /etc/supervisor
 
-USER www-data
-
 WORKDIR /var/www/
 
 
