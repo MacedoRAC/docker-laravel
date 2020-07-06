@@ -39,6 +39,10 @@ RUN pecl install imagick
 
 RUN pecl install mcrypt-1.0.2
 
+RUN pecl install -o -f redis \
+&&  rm -rf /tmp/pear \
+&&  docker-php-ext-enable redis
+
 RUN docker-php-ext-enable imagick \
     && docker-php-ext-configure gd \
         --with-gd \
