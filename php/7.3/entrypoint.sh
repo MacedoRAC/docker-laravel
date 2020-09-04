@@ -11,5 +11,5 @@ if [ -f ./composer.json ]; then
 	php artisan serve --host=0.0.0.0 --port=8000
 
 else
-	composer create-project --prefer-dist laravel/laravel new-project
+	laravel new
 fi
