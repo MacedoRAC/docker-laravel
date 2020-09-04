@@ -68,6 +68,7 @@ RUN docker-php-ext-enable imagick \
         mcrypt
 
 RUN curl -s https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer
+RUN composer global require laravel/installer
 
 
 
