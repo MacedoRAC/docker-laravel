@@ -33,8 +33,6 @@ RUN apt-get update -y && apt-get install -y \
         libgmp-dev \
         libonig-dev
 
-RUN export PATH=$PATH:/usr/sbin
-
 RUN apt-get autoremove
 
 RUN pecl install imagick
@@ -67,7 +65,9 @@ RUN docker-php-ext-enable imagick \
     && docker-php-ext-configure calendar
 
 RUN curl -s https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer
+ENV COMPOSER_HOME=/root/.composer
 RUN composer global require laravel/installer
+ENV PATH /root/.composer/vendor/laravel/installer/bin:/usr/sbin:$PATH
 
 
 RUN pecl install xdebug && \
@@ -88,9 +88,6 @@ RUN rm /etc/localtime
 RUN dpkg-reconfigure -f noninteractive tzdata
 
 RUN (crontab -l ; echo "* * * * * /usr/local/bin/php /var/www/artisan schedule:run >> /var/log/cron.log 2>&1") | crontab
-
-RUN groupadd supervisor
-RUN usermod -a -G supervisor root
 
 COPY queues/*.conf /etc/supervisor/conf.d/
 COPY supervisord.conf /etc/supervisor

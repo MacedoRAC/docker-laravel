@@ -31,8 +31,6 @@ RUN apt-get update -y && apt-get install -y \
         sysvinit-utils \
         cron
 
-RUN export PATH=$PATH:/usr/sbin
-
 RUN apt-get autoremove
 
 RUN pecl install imagick
@@ -65,7 +63,9 @@ RUN docker-php-ext-enable imagick \
     && docker-php-ext-configure calendar
 
 RUN curl -s https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer
+ENV COMPOSER_HOME=/root/.composer
 RUN composer global require laravel/installer
+ENV PATH /root/.composer/vendor/laravel/installer/bin:/usr/sbin:$PATH
 
 
 
