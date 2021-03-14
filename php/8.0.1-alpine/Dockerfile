@@ -37,6 +37,10 @@ RUN apk add --no-cache curl \
     && rm -rf composer-setup.php \
     && apk del curl
 
+# Installing Laravel installer globally
+RUN composer global require laravel/installer
+RUN echo 'alias laravel="$HOME/.composer/vendor/bin/laravel"' >> ~/.bashrc
+
 # Configure supervisor
 RUN mkdir -p /etc/supervisor.d/
 COPY docker/supervisord.ini /etc/supervisor.d/supervisord.ini
